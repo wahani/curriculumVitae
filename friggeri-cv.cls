@@ -50,13 +50,13 @@
 \RequirePackage[quiet]{fontspec}
 \RequirePackage[math-style=TeX,vargreek-shape=unicode]{unicode-math}
 
-\usepackage{sourcesanspro}
-\newfontfamily\bodyfont[]{sourcesanspro}
-\newfontfamily\thinfont[]{SourceSansPro ExtraLight}
-\newfontfamily\headingfont[]{SourceSansPro Black}
-
+% overriding Helvetia Neue fonts used in friggeri-cv
+% \usepackage[default]{sourcesanspro}
+\newfontfamily\bodyfont[]{Source Sans Pro}
+\newfontfamily\thinfont[]{Source Sans Pro ExtraLight}
+\newfontfamily\headingfont[]{Source Sans Pro Black}
 \defaultfontfeatures{Mapping=tex-text}
-\setmainfont[Mapping=tex-text, Color=textcolor]{SourceSansPro Light}
+\setmainfont[Mapping=tex-text, Color=textcolor]{Source Sans Pro Light}
 
 %\setmathfont{XITS Math}
 
@@ -72,6 +72,8 @@
   \color{white}%
 }
 
+
+%  LocalWords:  ExtraLight
 \newcommand{\header}[3]{%
   \begin{tikzpicture}[remember picture,overlay]
     \node [rectangle, fill=fillheader, anchor=north, minimum width=\paperwidth, minimum height=4cm] (box) at (current page.north){};
@@ -181,7 +183,16 @@
 % Bibliography %
 %%%%%%%%%%%%%%%%
 
-\RequirePackage[style=verbose, maxnames=99, sorting=ydnt]{biblatex}
+\RequirePackage[style=verbose, maxnames=99, sorting=ydnt, backend=biber]{biblatex}
+% \usepackage[
+% natbib=true,
+% backend=biber,
+% style=verbose, % author (2000)
+% maxcitenames=2,
+% maxbibnames=99,
+% uniquename=false
+% ]{biblatex}
+% \addbibresource[datatype=bibtex]{bibliography.bib}
 
 \DeclareFieldFormat[article]{title}{#1\par}
 \DeclareFieldFormat[book]{title}{#1\par}
@@ -286,13 +297,23 @@
   \par\vspace{0.3\baselineskip}
 }
 
-\DeclareNameFormat{author}{%
-  \small\addfontfeature{Color=lightgray}%
-  \ifblank{#3}{}{#3\space}#1%
-  \ifthenelse{\value{listcount}<\value{liststop}}
-    {\addcomma\space}
-    {}%
+\DeclareNameFormat{sortname}{%
+  \nameparts{#1}
+  \small\addfontfeature{Color=lightgray}
+  \usebibmacro{name:family}
+  {\namepartfamily}
+  {\namepartgiven}
+  {\namepartprefix}
+  {\namepartsuffix}%
 }
+    
+% \DeclareNameFormat{author}{%
+%   \small\addfontfeature{Color=lightgray}%
+%   \ifblank{#3}{}{#3\space}#1%
+%   \ifthenelse{\value{listcount}<\value{liststop}}
+%     {\addcomma\space}
+%     {}%
+% }
 
 \defbibheading{bibheading}[\bibname]{%
    \subsubsection*{#1}
@@ -302,7 +323,9 @@
 \newcommand{\printbibsection}[2]{
   \begin{refsection}
     \nocite{*}
-    \printbibliography[sorting=chronological, type={#1}, title={#2}, heading=bibheading]
+    \printbibliography[sorting=chronological, type={#1}, title={#2}, 
+%  LocalWords:  sortname
+heading=bibheading]
   \end{refsection}
 }
 
