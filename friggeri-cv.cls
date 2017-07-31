@@ -199,6 +199,22 @@
 \DeclareFieldFormat[inproceedings]{title}{#1\par}
 \DeclareFieldFormat[misc]{title}{#1\par}
 \DeclareFieldFormat[report]{title}{#1\par}
+\DeclareFieldFormat[manual]{title}{#1\par}
+
+\DeclareBibliographyDriver{manual}{%
+  \printfield{title}%
+  \newblock%
+  {%
+    \footnotesize\addfontfeature{Color=lightgray}\itshape%
+    \printfield{year}%
+    \newunit%
+    \printfield{note}%
+    \newunit%
+    \printfield{url}%
+    \newunit%
+  }
+  \par\vspace{0.3\baselineskip}
+}
 
 \DeclareBibliographyDriver{article}{%
   \printfield{title}%
